@@ -15,9 +15,10 @@ using std::string;
 // A-Z: 65-90
 // a-z: 97-122
 
-string caesar(bool encrypt, int key, std::fstream *fileIn, std::fstream *fileOut);
+string caesar(bool encrypt, int key, std::ifstream *fileIn, std::ofstream *fileOut);
 char encryptChar(char plaintext, int key);
 char decryptChar(char ciphertext, int key);
+bool checkSpecialChar(char character);
 
 int main()
 {
@@ -32,8 +33,8 @@ int main()
 	int encrypt,			// encrypt tracks whether we are encrypting or decrypting
 		key;				// key stores the working caesar cipher key						
 	string fileName;		// holds the filenames for input and output
-	std::fstream fileIn,	// fstream for the input file
-		fileOut;			// fstream for the output file
+	std::ifstream fileIn;	// ifstream for the input file
+	std::ofstream fileOut;	// ofstream for the output file
 
 	cout << "-------- CAESAR CIPHER --------\n\n";
 	cout << "Enter 0 for decryption or 1 for encryption: ";
@@ -64,7 +65,10 @@ int main()
 		key = ckey - ASCII_UPPER_A;
 	}
 
-	//cout << caesar(encrypt, key, &fileIn, &fileOut);
+	cout << caesar(encrypt, key, &fileIn, &fileOut);
+
+	fileIn.close();								// Remember to close the files so the mean garbage collector doesn't get mad at you
+	fileOut.close();
 }
 
 /*
@@ -75,9 +79,9 @@ int main()
 	decryption. Special characters (numeric, symbolic, and spaces) will be included in
 	the output file but will be omitted from Caesar modification.
 */
-string caesar(bool encrypt, int key, std::fstream *fileIn, std::fstream *fileOut)
+string caesar(bool encrypt, int key, std::ifstream *fileIn, std::ofstream *fileOut)
 {
-	// Keeping this code commented for testing purposes
+	// Keeping this code commented for "posterity"
 	/*cout << "Currently stored values\n";
 	cout << "encrypt = " << int(encrypt) << std::endl;
 	cout << "key = " << key << std::endl;
@@ -90,9 +94,28 @@ string caesar(bool encrypt, int key, std::fstream *fileIn, std::fstream *fileOut
 	else
 		cout << "fileOut is not open\n";*/
 
+	string input = "";							// this string will hold the working line in the input file
+	string output = "";							// holds the output to be routed to the output file
+	int charCount = 0;							// we're limiting number of characters to 500 so we need something to track that
 
+	while (!fileIn->eof() && charCount < 500)	// loop till either eof or 500 char limit is reached
+	{
+		std::getline(*fileIn, input);			// retrieve a line from the input file
+		for (int currentChar = 0; currentChar < input.size(); ++currentChar)
+		{
+			if (charCount < 500)					// second 500 char limit check necessary to avoid infinite length line in a file
+			{
+				if (encrypt)						// only thing that changes between encryption/decryption is formula so just check it once
+					output[currentChar] = encryptChar(input[currentChar], key);
+				else
+					output[currentChar] = decryptChar(input[currentChar], key);
 
-	return "Success\n";
+				++charCount;
+			}
+		}
+	}
+
+	return "Success, check output file.\n";
 }
 
 /*
@@ -100,13 +123,18 @@ string caesar(bool encrypt, int key, std::fstream *fileIn, std::fstream *fileOut
 
 	This function will take a single character and the numeric key as input and return
 	the Caesar encrypted character. Applying the formula that Phong gave us during
-	lecture.
+	lecture. It'll also check if it's a special character detailed in the caesar()
+	description
 
 	Cipher = (Plaintext + Key) mod 26
 */
 char encryptChar(char plaintext, int key)
 {
 	return((plaintext + key) % 26);		// hey it looks just like the formula :O
+
+	// TODO
+	// - adjust for uppercase/lowercase
+	// - check for special character case
 }
 
 /*
@@ -121,8 +149,24 @@ char encryptChar(char plaintext, int key)
 char decryptChar(char ciphertext, int key)
 {
 	return((ciphertext - key + 26) % 26);
+
+	// TODO
+	// - adjust for uppercase/lowercase
+	// - check for special character case
 }
 
-// TODO
-// Function for caesar
-// - Add for encrypt, subtract for decrypt
+/*
+	checkSpecialCharacter()
+
+	This function checks to see if the char parameter is anything other than an
+	alphabetic character. Returns false if it's a non-alphabetic char.
+*/
+bool checkSpecialChar(char character)
+{
+	int value = toupper(character);
+
+	if (value < ASCII_UPPER_A || value > ASCII_UPPER_Z)
+		return false;
+	else
+		return true;
+}

@@ -6,6 +6,7 @@
 #define ASCII_UPPER_Z 90
 #define ASCII_LOWER_A 97
 #define ASCII_LOWER_Z 122
+#define MAX_CHARS 2000
 
 using std::cout;
 using std::cin;
@@ -18,7 +19,6 @@ using std::string;
 string caesar(bool encrypt, int key, std::ifstream *fileIn, std::ofstream *fileOut);
 char encryptChar(char plaintext, int key);
 char decryptChar(char ciphertext, int key);
-bool checkSpecialChar(char character);
 
 int main()
 {
@@ -98,22 +98,25 @@ string caesar(bool encrypt, int key, std::ifstream *fileIn, std::ofstream *fileO
 	string output = "";							// holds the output to be routed to the output file
 	int charCount = 0;							// we're limiting number of characters to 500 so we need something to track that
 
-	while (!fileIn->eof() && charCount < 500)	// loop till either eof or 500 char limit is reached
+	while (!fileIn->eof() && charCount < MAX_CHARS)	// loop till either eof or char limit is reached
 	{
 		std::getline(*fileIn, input);			// retrieve a line from the input file
 		for (int currentChar = 0; currentChar < input.size(); ++currentChar)
 		{
-			if (charCount < 500)					// second 500 char limit check necessary to avoid infinite length line in a file
+			if (charCount < MAX_CHARS)					// second char limit check necessary to avoid infinite length line in a file
 			{
 				if (encrypt)						// only thing that changes between encryption/decryption is formula so just check it once
-					output[currentChar] = encryptChar(input[currentChar], key);
+					output += encryptChar(input[currentChar], key);
 				else
-					output[currentChar] = decryptChar(input[currentChar], key);
+					output += decryptChar(input[currentChar], key);
 
 				++charCount;
 			}
 		}
+		
 	}
+
+	*fileOut << output;
 
 	return "Success, check output file.\n";
 }
@@ -130,11 +133,15 @@ string caesar(bool encrypt, int key, std::ifstream *fileIn, std::ofstream *fileO
 */
 char encryptChar(char plaintext, int key)
 {
-	return((plaintext + key) % 26);		// hey it looks just like the formula :O
+	if (!isalpha(plaintext))												// if the character is non-alphabetic, return the character
+		return plaintext;
 
-	// TODO
-	// - adjust for uppercase/lowercase
-	// - check for special character case
+	bool uppercase = isupper(plaintext);									// check if it's uppercase for conversions
+
+	uppercase ? plaintext -= ASCII_UPPER_A : plaintext -= ASCII_LOWER_A;	// convert from ascii to int value
+	int ctext = (plaintext + key) % 26;										// use the formula
+	uppercase ? ctext += ASCII_UPPER_A : ctext += ASCII_LOWER_A;			// convert back from int to ascii value
+	return char(ctext);
 }
 
 /*
@@ -148,25 +155,17 @@ char encryptChar(char plaintext, int key)
 */
 char decryptChar(char ciphertext, int key)
 {
-	return((ciphertext - key + 26) % 26);
+	if (!isalpha(ciphertext))					// if the character is non-alphabetic, return the character
+		return ciphertext;
+
+	bool uppercase = isupper(ciphertext);
+
+	uppercase ? ciphertext -= ASCII_UPPER_A : ciphertext -= ASCII_LOWER_A;		// convert from ascii to int value
+	int ptext = (ciphertext - key + 26) % 26;									// use the formula
+	uppercase ? ptext += ASCII_UPPER_A : ptext += ASCII_LOWER_A;				// convert back from int to ascii value
+	return char(ptext);
 
 	// TODO
 	// - adjust for uppercase/lowercase
 	// - check for special character case
-}
-
-/*
-	checkSpecialCharacter()
-
-	This function checks to see if the char parameter is anything other than an
-	alphabetic character. Returns false if it's a non-alphabetic char.
-*/
-bool checkSpecialChar(char character)
-{
-	int value = toupper(character);
-
-	if (value < ASCII_UPPER_A || value > ASCII_UPPER_Z)
-		return false;
-	else
-		return true;
 }

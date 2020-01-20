@@ -16,21 +16,20 @@ std::string output_filenames[26] = { "plaintext/a.txt", "plaintext/b.txt", "plai
  */
 void split(std::ifstream & input_file)
 {
-	std::ofstream output;
+	std::ofstream output_file;
 	std::string buffer;
 	for (auto loop = 0; loop < 26; ++loop)
 	{
-		output.open(output_filenames[loop]);	// first, open the output file, looping through 26 output files
-		if (output.is_open())
-		{
-			output << "test";
-		}
-		else								// if file was bad, we'll exit with code 2
+		output_file.open(output_filenames[loop]);	// first, open the output file, looping through 26 output files
+		if (output_file.is_open())					// decipher the input file for each possible key
+			caesar_decipher(loop+1, input_file, output_file);
+		else										// if file was bad, we'll exit with code 2
 		{
 			std::cout << "Bad file or filename. Exiting..." << std::endl;
 			exit(2);
 		}
-		output.close();						// make sure the current file is closed
+		output_file.close();						// make sure the current file is closed
+		input_file.seekg(0);						// seek back to the beginning of the file
 	}
 }
 

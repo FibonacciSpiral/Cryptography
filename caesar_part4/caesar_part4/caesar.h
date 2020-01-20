@@ -16,7 +16,11 @@
 
 #include <fstream>
 #include <iostream>
+#include <string>
 
 
+
+// split() will split the file opened with input_file into 26 output files
+void split(std::ifstream& input_file);
 
 #endif

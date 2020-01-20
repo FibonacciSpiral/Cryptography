@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "caesar.h"
 
 using std::cout;
 using std::cin;
@@ -23,6 +24,8 @@ int main()
 	get_input_filename(input_file);
 	if (input_file.is_open())
 		cout << "Success" << std::endl;
+	split(input_file);
+	return 0;
 }
 
 /*

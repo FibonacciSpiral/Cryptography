@@ -18,9 +18,13 @@
 #include <iostream>
 #include <string>
 
-
-
 // split() will split the file opened with input_file into 26 output files
 void split(std::ifstream& input_file);
+
+// caesar_decipher() will decipher the input stream to the output stream given a key
+void caesar_decipher(const int key, std::ifstream& file_in, std::ofstream& file_out);
+
+// decrypt_char() decrypts a single character given the character and integer key as parameters
+char decrypt_char(char ciphertext, const int key);
 
 #endif

@@ -81,19 +81,6 @@ int main()
 */
 string caesar(bool encrypt, int key, std::ifstream *fileIn, std::ofstream *fileOut)
 {
-	// Keeping this code commented for "posterity"
-	/*cout << "Currently stored values\n";
-	cout << "encrypt = " << int(encrypt) << std::endl;
-	cout << "key = " << key << std::endl;
-	if (fileIn->is_open())
-		cout << "fileIn is open\n";
-	else
-		cout << "fileIn is not open\n";
-	if (fileOut->is_open())
-		cout << "fileOut is open\n";
-	else
-		cout << "fileOut is not open\n";*/
-
 	string input = "";							// this string will hold the working line in the input file
 	string output = "";							// holds the output to be routed to the output file
 	int charCount = 0;							// we're limiting number of characters to 500 so we need something to track that
@@ -151,7 +138,7 @@ char encryptChar(char plaintext, int key)
 	and returns the Caesar decrypted character. Applying the formula that Phong gave
 	us during lecture.
 
-	Plaintext = (Cipher – Key + 26) mod 26
+	Plaintext = (Cipher ï¿½ Key + 26) mod 26
 */
 char decryptChar(char ciphertext, int key)
 {

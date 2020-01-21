@@ -24,7 +24,8 @@ int main()
 	get_input_filename(input_file);
 	if (input_file.is_open())
 		cout << "Success" << std::endl;
-	split(input_file);
+	crack(input_file);
+
 	input_file.close();		// remember to close the filestream
 	return 0;
 }

@@ -84,7 +84,7 @@ string caesar(bool encrypt, int key, std::ifstream *fileIn, std::ofstream *fileO
 	char inputChar;							// this string will hold the working line in the input file
 	string output = "";							// holds the output to be routed to the output file
 
-	while (!fileIn->eof())	// loop till either eof
+	while (!fileIn->eof())	// loop till eof
 	{
 		fileIn->get(inputChar);
 

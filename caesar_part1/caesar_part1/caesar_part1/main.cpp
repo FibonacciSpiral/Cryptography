@@ -81,26 +81,17 @@ int main()
 */
 string caesar(bool encrypt, int key, std::ifstream *fileIn, std::ofstream *fileOut)
 {
-	string input = "";							// this string will hold the working line in the input file
+	char inputChar;							// this string will hold the working line in the input file
 	string output = "";							// holds the output to be routed to the output file
-	int charCount = 0;							// we're limiting number of characters to 500 so we need something to track that
 
-	while (!fileIn->eof() && charCount < MAX_CHARS)	// loop till either eof or char limit is reached
+	while (!fileIn->eof())	// loop till either eof
 	{
-		std::getline(*fileIn, input);			// retrieve a line from the input file
-		for (int currentChar = 0; currentChar < input.size(); ++currentChar)
-		{
-			if (charCount < MAX_CHARS)					// second char limit check necessary to avoid infinite length line in a file
-			{
-				if (encrypt)						// only thing that changes between encryption/decryption is formula so just check it once
-					output += encryptChar(input[currentChar], key);
-				else
-					output += decryptChar(input[currentChar], key);
+		fileIn->get(inputChar);
 
-				++charCount;
-			}
-		}
-		
+		if (encrypt)						// Here I removed the dependency on a char limit and simplified the logic
+			output += encryptChar(inputChar, key);
+		else
+			output += decryptChar(inputChar, key);
 	}
 
 	*fileOut << output;

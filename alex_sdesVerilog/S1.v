@@ -5,6 +5,9 @@
     the inner two bits as a column value. Output is the resulting 
     2-bit number.
 
+    Endian-ness matters in this situation because the coordinates
+    and output are all read as 2-bit numbers.
+
     Example:
         input  = 0001
         row    = 0__1 = 1
@@ -15,8 +18,8 @@
 */
 module S1 (
 
-    input [0:3] rightSide,  // Right four bits from previous XOR step
-    output [0:1] sBoxOut    // Output from S-Box
+    input [3:0] rightSide,  // Right four bits from previous XOR step
+    output [1:0] sBoxOut    // Output from S-Box
 
 );
     // Using a case statement for the hypothetical mux, this allows accurate

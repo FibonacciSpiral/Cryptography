@@ -3,6 +3,9 @@ This is the expansion/permutation function in Fk module.
 Basically, it takes the rightmost 4 bits of the byte you're
 working with and expands it to 8 bits. It also scrambles the
 data a little bit to help make the algorithm more complex.
+
+nibble (1, 2, 3, 4) becomes
+byte (4, 1, 2, 3, 2, 3, 4, 1)
 */
 
 module EP_Operation(

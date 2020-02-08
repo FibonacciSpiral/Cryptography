@@ -19,7 +19,7 @@
 module S1 (
 
     input [3:0] rightSide,  // Right four bits from previous XOR step
-    output [1:0] sBoxOut    // Output from S-Box
+    output reg [1:0] sBoxOut    // Output from S-Box
 
 );
     // Using a case statement for the hypothetical mux, this allows accurate
@@ -37,6 +37,7 @@ module S1 (
        ---------
     */
 
+always@(*) begin
     case(rightSide)                          // (row, col)
         4'b0000 : assign sBoxOut = 2'b00;   // (0, 0)
         4'b0001 : assign sBoxOut = 2'b10;   // (1, 0)
@@ -55,5 +56,6 @@ module S1 (
         4'b1110 : assign sBoxOut = 2'b00;   // (2, 3)
         4'b1111 : assign sBoxOut = 2'b11;   // (3, 3)
     endcase
+    end
 
 endmodule;

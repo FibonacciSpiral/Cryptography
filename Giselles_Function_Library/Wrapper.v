@@ -87,9 +87,16 @@ decoder_7_seg assignment6 (MessageReg[7:4], HEX5[7:0]);
 
 reg [9:0] key10 = 0;
 
-always@(posedge KEY[0]) begin //load 10 bit key into register
+wire reset;
+
+assign reset = ~KEY[2];
+
+always@(posedge KEY[0] or posedge reset) begin //load 10 bit key into register
 	
-	key10 = SW[9:0];
+	if(reset)
+		key10 = 10'b0000000000;
+	else
+		key10 = SW[9:0];
 	
 end
 
@@ -101,34 +108,41 @@ reg [7:0] resultreg2 = 0;
 
 reg [7:0] result = 0; //this is loaded with the result of encrypt or decrypt
 
-always@(posedge KEY[1]) begin // displays result or the subkeys depending on SW[0]
+always@(posedge KEY[1] or posedge reset) begin // displays result or the subkeys depending on SW[0]
 
-	if (SW[0]) begin
-		resultreg2 = result;
+	if(reset) begin
+		result = 8'b00000000;
+		resultreg2 = 8'b00000000;
 		resultreg1 = 8'b00000000;
 	end
 	else begin
-		resultreg1 = subkey1;
-		resultreg2 = subkey2;
+		if (SW[1]) //We are encrypting message
+			result = EncryptReg;
+		else
+			result = DecryptReg;
+
+		if (SW[0]) begin
+			resultreg2 = result;
+			resultreg1 = 8'b00000000;
+		end
+		else begin
+			resultreg1 = subkey1;
+			resultreg2 = subkey2;
+		end
+	
 	end
 
 end
 
-always@(posedge KEY[2]) begin //determines whether to encrypt or decrypt
-	
-	if (SW[1]) //We are encrypting message
-		result = EncryptReg;
-	else
-		result = DecryptReg;		
-
-end
 
 reg [7:0] MessageReg = 0;
 
-always@(posedge KEY[3]) begin //loads message into message register
+always@(posedge KEY[3] or posedge reset) begin //loads message into message register
 
-
-	MessageReg = SW[7:0];
+	if(reset)
+		MessageReg = 8'b00000000;
+	else
+		MessageReg = SW[7:0];
 
 end
 

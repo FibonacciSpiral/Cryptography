@@ -7,14 +7,14 @@
 #include<stdlib.h>
 #include<assert.h>
 #include<math.h>
-typedef long long llt;   //llt is substitute for long long
+typedef long long vlint_t;   //vlint_t is substitute for long long
 using namespace std;
 
 //
-//int is_prime(llt num)
+//int is_prime(vlint_t num)
 //{
-//	llt i;
-//	llt j = sqrt(num);
+//	vlint_t i;
+//	vlint_t j = sqrt(num);
 //	for (i = 2; i <= j; i++)
 //	{
 //		if (num % i == 0)
@@ -23,18 +23,18 @@ using namespace std;
 //	return 1;
 //}
 
-llt simplified_eea_modInverse(llt a, llt b)
+vlint_t simplified_eea_modInverse(vlint_t a, vlint_t b)
 {
 	//EEA finds gcd of a & b and x, y such that ax + by = gcd(a, b)
 	//this function finds x and y such that ax + by = 1 because a and b are expected to be coprime i.e. gcd(a, b) = 1
 	//we are interested only in x since it's the modulo inverse of a i.e. the RSA private key d for the given public key e = a and totient = b 
 
-	llt orig_a = a;
-	llt orig_b = b; //original b. needed to convert -ve x to +ve if x is caclulated as -ve
+	vlint_t orig_a = a;
+	vlint_t orig_b = b; //original b. needed to convert -ve x to +ve if x is caclulated as -ve
 	
 	//cout << "A: " << orig_a << ", B: " << origi_b << endl;
 
-	llt y = 0, x = 1;
+	vlint_t y = 0, x = 1;
 
 	if (b == 1)
 		return 0;
@@ -42,14 +42,14 @@ llt simplified_eea_modInverse(llt a, llt b)
 	while (a > 1)   //loop until a was set as 1 in the previous loop i.e for gcd condition gcd(a,b) = 1
 	{
 		// prev_q is the quotient of previous a and b. a & b are updated later in this loop
-		llt prev_q = a / b;
-		llt prev_b = b;
+		vlint_t prev_q = a / b;
+		vlint_t prev_b = b;
 
 		// b is remainder now, process same as 
 		// Euclid's algo 
 		b = a % b, a = prev_b;  //update a & b
 
-		llt prev_y = y;
+		vlint_t prev_y = y;
 
 		// Update y and x 
 		y = x - prev_q * prev_y;
@@ -64,9 +64,9 @@ llt simplified_eea_modInverse(llt a, llt b)
 	return x;
 }
 
-//llt calc_e(llt p, llt q, llt phiN)
+//vlint_t calc_e(vlint_t p, vlint_t q, vlint_t phiN)
 //{
-//	for (llt i = 2; i < phiN; i++)
+//	for (vlint_t i = 2; i < phiN; i++)
 //	{
 //		if (phiN % i == 0)
 //			continue;
@@ -79,7 +79,7 @@ llt simplified_eea_modInverse(llt a, llt b)
 //	return -1;
 //}
 
-llt valid_e(llt phiN, llt e)
+vlint_t valid_e(vlint_t phiN, vlint_t e)
 {
 	if (phiN % e == 0)
 	{
@@ -90,9 +90,9 @@ llt valid_e(llt phiN, llt e)
 		return e;
 }
 
-void keygen(llt p, llt q, llt e, llt out[])
+void keygen(vlint_t p, vlint_t q, vlint_t e, vlint_t out[])
 /*
-Inputs: p, q, e, each an llt (= long long)
+Inputs: p, q, e, each an vlint_t (= long long)
 Outputs: out array with 5 elements 0 - p, 1 - q, 2 - e, 3 - N, 4 - private key pair d
 Function: generate N and d RSA public and private keys for a given p, q, and e. Can be run multiple times 
 	with the same p and q but changing e to generate new private keys.
@@ -100,9 +100,9 @@ Dependencies: simplified_eea_modInverse(), valid_e()
 Comments: will fail if e chosen is not a good value; feel free to comment out cout statements. Tested with p, q, e of up to 6 digits each
 */
 {
-	llt N; //= 0;
-	llt d; //= 0;
-	llt phiN = 0;
+	vlint_t N; //= 0;
+	vlint_t d; //= 0;
+	vlint_t phiN = 0;
 
 	cout << "Welcome to RSA KeyGen" << endl;
 
@@ -143,10 +143,10 @@ int main()
 	long long q = 100907;
 	long long e = 65537;
 
-	//llt p = in[0];//104659;//1049;//5;//104659;
-//llt q = in[1];//100907;//1487;//11;//100907;
-//llt e = in[2];//45389;//641;//17;//45389;
-	llt out[5] = { 1, 2, 3, 4, 5 };
+	//vlint_t p = in[0];//104659;//1049;//5;//104659;
+//vlint_t q = in[1];//100907;//1487;//11;//100907;
+//vlint_t e = in[2];//45389;//641;//17;//45389;
+	vlint_t out[5] = { 1, 2, 3, 4, 5 };
 	//long long in[3] = { p,q,e };
 
 	string varname = "p: ";

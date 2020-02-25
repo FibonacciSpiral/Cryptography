@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\RSA\RSA\main.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\RSA\RSA\rsa.cpp">
+    <ClCompile Include="rsa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\RSA\RSA\rsa.h">
+    <ClInclude Include="rsa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

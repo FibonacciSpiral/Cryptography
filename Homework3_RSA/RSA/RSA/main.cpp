@@ -8,47 +8,28 @@ using std::string;
 
 int main()
 {
-	char menu, cont = 'y';
-	vlint_t in, N, result;
+	vlint_t p = 83621, q = 33113, e1, e2, e3;
+	vlint_t out1[5], out2[5], out3[5];
 
-	cout << "RSA ENCRYPT/DECRYPT\n\n";
+	cout << "RSA KEYGEN\n";
+	cout << "p = " << p << " | q = " << q << "\n";
+	cout << "Enter first e: ";
+	cin >> e1;
+	keygen(p, q, e1, out1);
+	cout << "Enter second e: ";
+	cin >> e2;
+	keygen(p, q, e2, out2);
+	cout << "Enter third e: ";
+	cin >> e3;
+	keygen(p, q, e3, out3);
 
-	while (cont == 'y')
-	{
-		cout << "Encrypt or decrypt? (e/d): ";
-		cin >> menu;
-		while (menu != 'e' && menu != 'd')
-		{
-			cout << "Invalid, enter again: ";
-			cin >> menu;
-		}
-
-		if (menu == 'e')
-		{
-			vlint_t e;
-			cout << "Enter plaintext number: ";
-			cin >> in;
-			cout << "Enter encryption key (e): ";
-			cin >> e;
-			cout << "Enter modulus (N): ";
-			cin >> N;
-			result = encrypt(in, e, N);
-		}
-		else
-		{
-			vlint_t d;
-			cout << "Enter ciphertext number: ";
-			cin >> in;
-			cout << "Enter decryption key (d): ";
-			cin >> d;
-			cout << "Enter modulus (N): ";
-			cin >> N;
-			result = decrypt(in, d, N);
-		}
-		cout << "Outcome = " << result << endl;
-		cout << "Enter 'y' to run again: ";
-		cin >> cont;
-	}
+	cout << endl;
+	cout << "ROUND ONE\n";
+	cout << "e = " << e1 << " | d = " << out1[4] << " | N = " << out1[3] << endl;
+	cout << "ROUND TWO\n";
+	cout << "e = " << e2 << " | d = " << out2[4] << " | N = " << out2[3] << endl;
+	cout << "ROUND THREE\n";
+	cout << "e = " << e3 << " | d = " << out3[4] << " | N = " << out3[3] << endl;
 
 	int get;
 	cin >> get;

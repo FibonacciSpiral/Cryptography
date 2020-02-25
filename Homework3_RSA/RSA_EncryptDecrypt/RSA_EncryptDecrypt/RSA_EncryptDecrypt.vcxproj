@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="rsa.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rsa.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{7DCA71F0-3433-4FA0-BFA1-DA7E912C6F69}</ProjectGuid>
@@ -138,13 +145,6 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\RSA\RSA\main.cpp" />
-    <ClCompile Include="..\..\RSA\RSA\rsa.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\RSA\RSA\rsa.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

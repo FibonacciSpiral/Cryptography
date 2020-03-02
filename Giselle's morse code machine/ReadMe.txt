@@ -7,3 +7,6 @@ then simply instantiate MorseCodeTA and pass in the desired inputs and outputs.
 If you're curious about how the morse code pattern is determined, then check out PatternMux.
 
 This machine can output every letter of the alphabet. I hope you like it!
+
+*Also this machine requires a 50 MHz clock as an input. In my FPGA, this clock is called CLOCK_50.
+Xylinx probably has a clock like this as well.
